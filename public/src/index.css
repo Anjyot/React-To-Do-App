@@ -1,0 +1,581 @@
+/* ─── CSS Variables ─────────────────────────────── */
+:root {
+  --white:        #ffffff;
+  --off-white:    #f8f8f6;
+  --surface:      #f2f1ef;
+  --border:       #e8e6e1;
+  --border-hover: #d0cdc6;
+  --text-primary: #1a1916;
+  --text-secondary:#7a7670;
+  --text-muted:   #b0ada6;
+  --accent:       #2d6a4f;
+  --accent-light: #e8f5ee;
+  --accent-hover: #245a42;
+  --danger:       #c0392b;
+  --danger-light: #fdf0ee;
+  --shadow-sm:    0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md:    0 4px 16px rgba(0,0,0,0.08), 0 2px 6px rgba(0,0,0,0.04);
+  --shadow-lg:    0 12px 40px rgba(0,0,0,0.10), 0 4px 12px rgba(0,0,0,0.06);
+  --radius-sm:    8px;
+  --radius-md:    14px;
+  --radius-lg:    20px;
+  --radius-full:  999px;
+  --font-body:    'DM Sans', sans-serif;
+  --font-display: 'DM Serif Display', serif;
+  --transition:   0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ─── Reset & Base ──────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--off-white);
+  color: var(--text-primary);
+  min-height: 100vh;
+  line-height: 1.5;
+}
+
+/* ─── Keyframe Animations ───────────────────────── */
+@keyframes fadeInSlide {
+  from {
+    opacity: 0;
+    transform: translateY(-12px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes fadeOutSlide {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    max-height: 120px;
+    margin-bottom: 10px;
+  }
+  to {
+    opacity: 0;
+    transform: translateX(20px) scale(0.96);
+    max-height: 0;
+    margin-bottom: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50%       { transform: scale(1.12); }
+}
+
+@keyframes shimmer {
+  0%   { background-position: -400px 0; }
+  100% { background-position: 400px 0; }
+}
+
+/* ─── App Layout ────────────────────────────────── */
+.app-wrapper {
+  min-height: 100vh;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 48px 16px 80px;
+  background:
+    radial-gradient(ellipse 80% 50% at 50% -20%, rgba(45,106,79,0.08) 0%, transparent 70%),
+    var(--off-white);
+}
+
+.app-container {
+  width: 100%;
+  max-width: 560px;
+}
+
+/* ─── Header ────────────────────────────────────── */
+.app-header {
+  text-align: center;
+  margin-bottom: 32px;
+  animation: slideDown 0.5s ease both;
+}
+
+.app-header .label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  background: var(--accent-light);
+  border: 1px solid rgba(45,106,79,0.18);
+  border-radius: var(--radius-full);
+  padding: 4px 12px;
+  margin-bottom: 14px;
+}
+
+.app-header h1 {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 5vw, 2.8rem);
+  font-weight: 400;
+  line-height: 1.15;
+  color: var(--text-primary);
+  letter-spacing: -0.01em;
+}
+
+.app-header h1 em {
+  font-style: italic;
+  color: var(--accent);
+}
+
+.app-header .subtitle {
+  margin-top: 8px;
+  font-size: 14px;
+  color: var(--text-secondary);
+  font-weight: 300;
+}
+
+/* ─── Card ──────────────────────────────────────── */
+.card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+}
+
+/* ─── Add Task Form ─────────────────────────────── */
+.add-task-form {
+  padding: 20px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  gap: 10px;
+  background: var(--white);
+}
+
+.task-input-wrapper {
+  flex: 1;
+  position: relative;
+}
+
+.task-input-wrapper svg {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+  pointer-events: none;
+  transition: color var(--transition);
+}
+
+.task-input {
+  width: 100%;
+  padding: 11px 14px 11px 40px;
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--text-primary);
+  background: var(--off-white);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-md);
+  outline: none;
+  transition: border-color var(--transition), box-shadow var(--transition), background var(--transition);
+}
+
+.task-input::placeholder {
+  color: var(--text-muted);
+}
+
+.task-input:focus {
+  border-color: var(--accent);
+  background: var(--white);
+  box-shadow: 0 0 0 3px rgba(45,106,79,0.10);
+}
+
+.task-input:focus + svg,
+.task-input-wrapper:focus-within svg {
+  color: var(--accent);
+}
+
+.add-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 11px 18px;
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--white);
+  background: var(--accent);
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: background var(--transition), transform var(--transition), box-shadow var(--transition);
+  white-space: nowrap;
+  box-shadow: 0 2px 8px rgba(45,106,79,0.25);
+}
+
+.add-btn:hover {
+  background: var(--accent-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(45,106,79,0.30);
+}
+
+.add-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 1px 4px rgba(45,106,79,0.20);
+}
+
+.add-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* ─── Stats Bar ─────────────────────────────────── */
+.stats-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--border);
+  background: var(--off-white);
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.stats-counters {
+  display: flex;
+  gap: 16px;
+}
+
+.stat-chip {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.stat-chip .dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+}
+
+.stat-chip.total  .dot { background: var(--text-muted); }
+.stat-chip.done   .dot { background: var(--accent); }
+.stat-chip.pending .dot { background: #e0a800; }
+
+/* ─── Filter Tabs ───────────────────────────────── */
+.filter-tabs {
+  display: flex;
+  gap: 4px;
+}
+
+.filter-btn {
+  padding: 5px 12px;
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.filter-btn:hover {
+  color: var(--text-primary);
+  background: var(--white);
+  border-color: var(--border);
+}
+
+.filter-btn.active {
+  color: var(--accent);
+  background: var(--accent-light);
+  border-color: rgba(45,106,79,0.20);
+  font-weight: 600;
+}
+
+/* ─── Task List ─────────────────────────────────── */
+.task-list {
+  padding: 10px;
+  min-height: 80px;
+}
+
+.task-list-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* ─── Task Item ─────────────────────────────────── */
+.task-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 13px 14px;
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-md);
+  transition: border-color var(--transition), box-shadow var(--transition), background var(--transition);
+  animation: fadeInSlide 0.28s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  position: relative;
+  overflow: hidden;
+}
+
+.task-item::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 3px;
+  background: var(--border);
+  border-radius: 0 2px 2px 0;
+  transition: background var(--transition);
+}
+
+.task-item:hover {
+  border-color: var(--border-hover);
+  box-shadow: var(--shadow-sm);
+}
+
+.task-item.completed {
+  background: var(--off-white);
+}
+
+.task-item.completed::before {
+  background: var(--accent);
+}
+
+.task-item.removing {
+  animation: fadeOutSlide 0.28s ease forwards;
+}
+
+/* Checkbox */
+.checkbox-btn {
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  border: 2px solid var(--border-hover);
+  background: var(--white);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition);
+  position: relative;
+}
+
+.checkbox-btn:hover {
+  border-color: var(--accent);
+  background: var(--accent-light);
+}
+
+.checkbox-btn.checked {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.checkbox-btn svg {
+  color: var(--white);
+  opacity: 0;
+  transform: scale(0.6);
+  transition: all 0.18s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.checkbox-btn.checked svg {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Task text */
+.task-text-wrapper {
+  flex: 1;
+  min-width: 0;
+}
+
+.task-text {
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--text-primary);
+  line-height: 1.4;
+  word-break: break-word;
+  transition: color var(--transition);
+}
+
+.task-text.done {
+  text-decoration: line-through;
+  color: var(--text-muted);
+}
+
+.task-meta {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+/* Delete button */
+.delete-btn {
+  flex-shrink: 0;
+  width: 30px;
+  height: 30px;
+  border-radius: var(--radius-sm);
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition);
+  opacity: 0;
+}
+
+.task-item:hover .delete-btn {
+  opacity: 1;
+}
+
+.delete-btn:hover {
+  background: var(--danger-light);
+  color: var(--danger);
+  transform: scale(1.08);
+}
+
+/* ─── Empty State ───────────────────────────────── */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  color: var(--text-muted);
+  animation: slideDown 0.3s ease both;
+  gap: 10px;
+}
+
+.empty-state .empty-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 4px;
+}
+
+.empty-state p {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.empty-state span {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+/* ─── Footer / Clear Completed ──────────────────── */
+.card-footer {
+  padding: 12px 20px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--off-white);
+}
+
+.footer-info {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.clear-btn {
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: var(--radius-sm);
+  transition: all var(--transition);
+}
+
+.clear-btn:hover {
+  color: var(--danger);
+  background: var(--danger-light);
+}
+
+.clear-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* ─── Progress Bar ──────────────────────────────── */
+.progress-bar-wrap {
+  padding: 0 20px 0;
+  background: var(--white);
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.progress-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+
+.progress-track {
+  height: 5px;
+  background: var(--surface);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), #52b788);
+  border-radius: var(--radius-full);
+  transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  min-width: 0%;
+}
+
+/* ─── Responsive ────────────────────────────────── */
+@media (max-width: 480px) {
+  .app-wrapper    { padding: 24px 12px 60px; }
+  .stats-bar      { flex-direction: column; align-items: flex-start; gap: 10px; }
+  .add-task-form  { padding: 14px; }
+  .add-btn span   { display: none; }
+}
